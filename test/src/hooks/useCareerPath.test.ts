@@ -19,7 +19,7 @@ describe('useCareerPath', () => {
       id: 0,
       first_name: null,
       last_name: null,
-      display_first_last: null,
+      display_first_last: 'Jayson Tatum',
       display_fi_last: null,
       birthdate: null,
       school: null,
@@ -50,11 +50,42 @@ describe('useCareerPath', () => {
   it('Starts game and sets currentPlayer', async () => {
     const { result } = renderHook(() => useCareerPath(ctx));
 
-    act(() => {
-      result.current.setPlayerPoolFilter({ isActive: { equals: true } });
-      result.current.onStart();
-    });
+    act(() => result.current.onStart());
 
     await waitFor(() => expect(result.current.currentPlayer).toBe(mockPlayer));
+  });
+
+  it('Checks correct guess', async () => {
+    const { result } = renderHook(() => useCareerPath(ctx));
+
+    const onCorrect = jest.fn(() => {});
+    const onIncorrect = jest.fn(() => {});
+
+    act(() => result.current.onStart());
+
+    await waitFor(() => expect(result.current.currentPlayer).toBe(mockPlayer));
+
+    act(() => result.current.checkGuess(mockPlayer.id, onCorrect, onIncorrect));
+
+    await waitFor(() => expect(onCorrect).toHaveBeenCalledWith(mockPlayer));
+
+    expect(onIncorrect).not.toHaveBeenCalled();
+  });
+
+  it('Checks incorrect guess', async () => {
+    const { result } = renderHook(() => useCareerPath(ctx));
+
+    const onCorrect = jest.fn(() => {});
+    const onIncorrect = jest.fn(() => {});
+
+    act(() => result.current.onStart());
+
+    await waitFor(() => expect(result.current.currentPlayer).toBe(mockPlayer));
+
+    act(() => result.current.checkGuess(1, onCorrect, onIncorrect));
+
+    await waitFor(() => expect(onIncorrect).toHaveBeenCalledWith([mockPlayer]));
+
+    expect(onCorrect).not.toHaveBeenCalled();
   });
 });

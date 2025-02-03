@@ -28,7 +28,7 @@ const useCareerPath = (ctx: Context = container.resolve(Context)) => {
     onCorrect: (correctPlayer: Player) => void,
     onIncorrect: (possibleAnswers: Player[]) => void,
   ) => {
-    if (key) {
+    if (key !== null) {
       const previousPossibleAnswers = possibleAnswers;
       const guessedPlayer = possibleAnswers?.find((player) => player.id == key);
       if (guessedPlayer) {
