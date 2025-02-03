@@ -7,6 +7,7 @@ import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { siteConfig } from '@/config/site';
+import ProfileView from './profileview';
 import ThemeSwitcher from './themeswitcher';
 
 export default function NBANavbar() {
@@ -34,6 +35,7 @@ export default function NBANavbar() {
         </ul>
       </NavbarContent>
       <NavbarContent justify="end">
+        <ProfileView />
         <ThemeSwitcher />
       </NavbarContent>
     </Navbar>

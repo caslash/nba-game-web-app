@@ -38,7 +38,11 @@ export default function SinglePlayer() {
 
   return (
     <div className="flex flex-col h-full items-center m-16 space-y-8">
-      {!currentPlayer && <Button onPress={onStart}>Start Game</Button>}
+      {!currentPlayer && (
+        <Button color="success" radius="sm" variant="flat" onPress={onStart}>
+          Start Game
+        </Button>
+      )}
       {currentPlayer && (
         <div className="flex flex-col items-center space-y-8">
           <div className="flex flex-col items-center">

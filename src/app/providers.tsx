@@ -1,9 +1,10 @@
 'use client';
 
-import type { ThemeProviderProps } from 'next-themes';
-
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { HeroUIProvider } from '@heroui/system';
+import type { ThemeProviderProps } from 'next-themes';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
+
 import { useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
 
@@ -23,8 +24,10 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   const useHref = (href: string) => process.env.BASE_PATH + href;
 
   return (
-    <HeroUIProvider navigate={router.push} useHref={useHref}>
-      <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
-    </HeroUIProvider>
+    <UserProvider>
+      <HeroUIProvider navigate={router.push} useHref={useHref}>
+        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+      </HeroUIProvider>
+    </UserProvider>
   );
 }
