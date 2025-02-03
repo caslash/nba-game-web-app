@@ -3,9 +3,10 @@ import '@/styles/globals.css';
 import { Providers } from '@/app/providers';
 import NBANavbar from '@/components/navbar/navbar';
 import { sfFont } from '@/styles/sfFont';
+import { ReactNode } from 'react';
 import { Bounce, ToastContainer } from 'react-toastify';
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" className={`${sfFont.variable}`} suppressHydrationWarning>
       <body>

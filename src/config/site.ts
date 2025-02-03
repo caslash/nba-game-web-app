@@ -1,16 +1,25 @@
 export type SiteConfig = typeof siteConfig;
 
-export const siteConfig = {
+type NavItem = {
+  label: string;
+  href: string;
+};
+
+export const siteConfig: { name: string; navItems: NavItem[] } = {
   name: 'NBA Career Game',
   navItems: [
     {
       label: 'Home',
       href: '/',
     },
-    // {
-    //   label: 'Multiplayer',
-    //   href: '/multiplayer',
-    // },
+    {
+      label: 'Players',
+      href: '/players',
+    },
+    {
+      label: 'Multiplayer',
+      href: '/multiplayer',
+    },
     {
       label: 'Single Player',
       href: '/singleplayer',

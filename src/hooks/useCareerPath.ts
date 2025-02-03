@@ -2,7 +2,7 @@
 
 import { getPlayers, getRandomPlayer } from '@/app/actions';
 import { Player, Prisma } from '@prisma/client';
-import { useState } from 'react';
+import { Key, useState } from 'react';
 
 const useCareerPath = () => {
   const [streak, setStreak] = useState<number>(0);
@@ -11,6 +11,7 @@ const useCareerPath = () => {
   const [playerPoolFilter, setPlayerPoolFilter] = useState<Prisma.PlayerWhereInput>();
 
   const onStart = () => {
+    setCurrentPlayer(null);
     getRandomPlayer(playerPoolFilter).then((player) => {
       setCurrentPlayer(player);
       getPlayers({ where: { team_history: { equals: player?.team_history } } }).then(
@@ -20,7 +21,7 @@ const useCareerPath = () => {
   };
 
   const checkGuess = (
-    key: React.Key | null,
+    key: Key | null,
     onCorrect: (correctPlayer: Player) => void,
     onIncorrect: (possibleAnswers: Player[]) => void,
   ) => {

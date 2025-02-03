@@ -1,6 +1,5 @@
 'use client';
 
-import fetcher from '@/utils/fetcher';
 import {
   getKeyValue,
   Pagination,
@@ -13,8 +12,8 @@ import {
   TableRow,
 } from '@heroui/react';
 import { Player } from '@prisma/client';
-import React from 'react';
-import useSwr from 'swr';
+import { LoadingState } from '@react-types/shared';
+import { ChangeEvent, Dispatch, SetStateAction, useMemo } from 'react';
 
 const columns: { key: string; label: string }[] = [
   {
@@ -49,36 +48,22 @@ const columns: { key: string; label: string }[] = [
 
 export default function PlayerTable({
   className,
-}: Readonly<React.ComponentPropsWithoutRef<'div'>>) {
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [page, setPage] = React.useState(1);
-
-  const { data, isLoading } = useSwr(
-    `http://localhost:3000/api/players?page=${page}&rowsPerPage=${rowsPerPage}`,
-    fetcher,
-    { keepPreviousData: true },
-  );
-
-  const { players, total: totalPlayers }: { players: Player[]; total: number } = data ?? {
-    players: [],
-    total: 0,
-  };
-
-  const totalPages = React.useMemo(() => {
-    return totalPlayers ? Math.ceil(totalPlayers / rowsPerPage) : 0;
-  }, [totalPlayers, rowsPerPage]);
-
-  const loadingState = isLoading || data?.players.length === 0 ? 'loading' : 'idle';
-
-  const onRowsPerPageChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setRowsPerPage(Number(e.target.value));
-      setPage(1);
-    },
-    [setPage, setRowsPerPage],
-  );
-
-  const topContent = React.useMemo(() => {
+  players,
+  page,
+  setPage,
+  totalPages,
+  onRowsPerPageChange,
+  loadingState,
+}: Readonly<{
+  className?: string;
+  players: Player[];
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  totalPages: number;
+  onRowsPerPageChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  loadingState: LoadingState;
+}>) {
+  const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4 items-end">
         <label className="flex items-center text-default-400 text-small">
@@ -109,7 +94,7 @@ export default function PlayerTable({
               showControls
               showShadow
               dotsJump={10}
-              initialPage={1}
+              initialPage={page}
               color="secondary"
               page={page}
               total={totalPages}

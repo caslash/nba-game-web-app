@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "ts-node src/server.ts",
+    "dev": "tsx src/server.ts",
     "build": "next build",
     "start": "NODE_ENV=production node src/server.ts",
     "lint": "jest --config=jest.lint.config.ts",
@@ -25,7 +25,8 @@
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "swr": "^2.3.0",
-    "uuid": "^11.0.5"
+    "uuid": "^11.0.5",
+    "xstate": "^5.19.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
