@@ -7,8 +7,7 @@ export default function TeamLogo({
   className,
   isHidden,
   teamId,
-  theme,
-}: Readonly<{ className?: string; isHidden: boolean; teamId: string; theme: string | undefined }>) {
+}: Readonly<{ className?: string; isHidden: boolean; teamId: string }>) {
   return (
     <div className={`relative ${className}`}>
       <Image

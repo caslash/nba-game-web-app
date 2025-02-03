@@ -1,6 +1,9 @@
-import { gameActor } from '@/lib/statemachine';
 import next from 'next';
 import { createServer } from 'node:http';
+import 'reflect-metadata';
+
+import { gameActor } from '@/lib/statemachine';
+
 import { Server } from 'socket.io';
 
 const dev = process.env.NODE_ENV !== 'production';

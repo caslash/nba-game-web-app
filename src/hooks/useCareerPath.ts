@@ -1,20 +1,23 @@
 'use client';
 
 import { getPlayers, getRandomPlayer } from '@/app/actions';
+import { Context } from '@/database/prisma.context';
+import '@/database/prisma.symbol';
 import { Player, Prisma } from '@prisma/client';
 import { Key, useState } from 'react';
+import { container } from 'tsyringe';
 
-const useCareerPath = () => {
+const useCareerPath = (ctx: Context = container.resolve(Context)) => {
   const [streak, setStreak] = useState<number>(0);
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>();
   const [possibleAnswers, setPossibleAnswers] = useState<Player[] | null>([]);
-  const [playerPoolFilter, setPlayerPoolFilter] = useState<Prisma.PlayerWhereInput>();
+  const [playerPoolFilter, setPlayerPoolFilter] = useState<Prisma.PlayerWhereInput>({});
 
   const onStart = () => {
     setCurrentPlayer(null);
-    getRandomPlayer(playerPoolFilter).then((player) => {
+    getRandomPlayer(playerPoolFilter, ctx).then((player) => {
       setCurrentPlayer(player);
-      getPlayers({ where: { team_history: { equals: player?.team_history } } }).then(
+      getPlayers({ where: { team_history: { equals: player?.team_history } } }, ctx).then(
         setPossibleAnswers,
       );
     });

@@ -45,7 +45,7 @@ export default function SinglePlayer() {
             <p className={`font-black text-xl`}>Streak:</p>
             <p className={`font-semibold text-6xl`}>{streak}</p>
           </div>
-          <TestCareerPathView teamHistory={currentPlayer.team_history!.split(',')} theme={theme} />
+          <TestCareerPathView teamHistory={currentPlayer.team_history!.split(',')} />
         </div>
       )}
       <PlayerSearchBar
