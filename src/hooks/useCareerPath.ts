@@ -9,8 +9,8 @@ import { container } from 'tsyringe';
 
 const useCareerPath = (ctx: Context = container.resolve(Context)) => {
   const [streak, setStreak] = useState<number>(0);
-  const [currentPlayer, setCurrentPlayer] = useState<Player | null>();
-  const [possibleAnswers, setPossibleAnswers] = useState<Player[] | null>([]);
+  const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null);
+  const [possibleAnswers, setPossibleAnswers] = useState<Player[]>([]);
   const [playerPoolFilter, setPlayerPoolFilter] = useState<Prisma.PlayerWhereInput>({});
 
   const onStart = () => {
@@ -35,7 +35,7 @@ const useCareerPath = (ctx: Context = container.resolve(Context)) => {
         onCorrect(guessedPlayer);
         setStreak(streak + 1);
       } else {
-        onIncorrect(previousPossibleAnswers!);
+        onIncorrect(previousPossibleAnswers);
         setStreak(0);
       }
       onStart();
