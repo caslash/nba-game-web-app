@@ -1,6 +1,6 @@
 'use client';
 
-import { getPlayerCount } from '@/app/actions';
+import { getPlayerCount } from '@/server/actions';
 import { Player } from '@prisma/client';
 import { useAsyncList } from '@react-stately/data';
 import { useEffect, useState } from 'react';

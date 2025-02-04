@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "tsx src/server.ts",
+    "dev": "tsx src/server",
     "build": "next build",
     "start": "NODE_ENV=production node src/server.ts",
     "lint": "jest --config=jest.lint.config.ts",

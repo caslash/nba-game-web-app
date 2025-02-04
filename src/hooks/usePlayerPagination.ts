@@ -1,5 +1,5 @@
 'use client';
-import { fetcher } from '@/utils/fetcher';
+import { fetcher } from '@/server/utils/fetcher';
 import { Player } from '@prisma/client';
 import { LoadingState } from '@react-types/shared';
 import { ChangeEvent, useCallback, useMemo, useState } from 'react';

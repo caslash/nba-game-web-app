@@ -1,4 +1,4 @@
-import { getPlayer } from '@/app/actions';
+import { getPlayer } from '@/server/actions';
 
 export default async function PlayerPage({
   params,

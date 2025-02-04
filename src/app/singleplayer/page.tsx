@@ -1,7 +1,7 @@
 'use client';
 
 import { CorrectAnswerView, IncorrectAnswerView } from '@/components/careerpath/answerview';
-import { TestCareerPathView } from '@/components/careerpath/testcareerpathview';
+import { UnveilingCareerPathView } from '@/components/careerpath/unveilingcareerpathview';
 import PlayerSearchBar from '@/components/playersearchbar';
 import useCareerPath from '@/hooks/useCareerPath';
 import useConfetti from '@/hooks/useConfetti';
@@ -45,7 +45,7 @@ export default function SinglePlayer() {
             <p className={`font-black text-xl`}>Streak:</p>
             <p className={`font-semibold text-6xl`}>{streak}</p>
           </div>
-          <TestCareerPathView teamHistory={currentPlayer.team_history!.split(',')} />
+          <UnveilingCareerPathView teamHistory={currentPlayer.team_history!.split(',')} />
         </div>
       )}
       <PlayerSearchBar

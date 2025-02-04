@@ -1,6 +1,6 @@
 'use client';
 
-import { socket } from '@/lib/socket';
+import { socket } from '@/server/lib/socket';
 import { Button } from '@heroui/react';
 import { useEffect, useState } from 'react';
 
