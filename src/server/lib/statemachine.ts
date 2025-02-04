@@ -1,83 +1,78 @@
-import { createActor, createMachine } from 'xstate';
+import { createActor, fromPromise, setup } from 'xstate';
 
-export const gameMachine = createMachine(
-  {
-    /** @xstate-layout N4IgpgJg5mDOIC5QHECGBbMACAsqgxgBYCWAdmAHTEQA2YAxAMIDyAcqwKKMAqA2gAwBdRKAAOAe1jEALsXGkRIAB6IAjACYArBQCcq-pp0BmAGxH1ADh2b1RgDQgAnoguqKR-vyPfTFm6pNNAF8ghzRMXAIScgooDDAAQXxZADdKAHdUGQAxcQAnAAUaVEcwPNh6AGVuBIAlPiFFCSlZeUUVBA8jChMTCwsPax0dCwB2ABYHZwQTCYpxnXUdcb7Rq3GjUZCw+MiiMko4zCTUylhpVDzZUihwhgh5SjIU8QBrSju96MP4k+I0ijnS7XW7xBDPcT4VCtUgCQRwpqSGRyBRIZSIEzqfgUTQWSx6CwGUYmKYY0baYZeCbWMYDEzbECfPD7GJHRLJf6HMDkPLQshQWriACupAg9AeMQh7woTKiB1ivw5AJgPL5N0FIog4NILyhMLhCLRzWRbTRHX0mm6FnGtlURnGNsMNlJMxM2J0Jg2w0W41Umn49NCjN2zO+CuOSoyWWkuTyyCFcAqjAAMgBJDisbgAfWQAFUOJVKoaxEiYe01KpVBYekZVKMhpb1BpNC7fdjRuYzBtcVp+H6GbKWT8I6cKKI8pDE-z44n6MWQMay2aMVicXirFWiSSnBiDBQ1np-R2A6N+Fsg4Ow2y-gDx5PYFIbjOH3PVMIjaWUeWZquexvCZoxIupomgmDioH1kYfiEl4OgDiGcqsoqo5kPg+R5GAyTPhUEpPDqbwfAhQ7huyKGkGheQYVhCYPtqup8vIBqNB+LRfsuCAWlaNq1vajrWOowEgRQhKuBoKweloRghEGpDiBAcCKJeByIqxpqgB0AC0OguhpYGePplYaH4OhnuM8ERKG8rUHQKkmqi6mIDaLquBQVZVishJQR2dbmdgllISOnK2UuDmdNpO6dLY4FnrYuKzPwDq+V88rXpGFCZDk+RFCUZTwCxdnfmMLqBG4CWeIsp7WuoJhwReRFXshnKAhcVzTvEwVsaFvrjBQtgTHafSYpBLYRSVFBlfwFX8FVNVJf5w6kU1KplGqArCqKHVqeiCCefM6gLBM5LjGsmiqMVpjjao4wGDYk06OS547BZiELTeUaZXGNF5SWqn2dtGgmfuoFLPotYaEYI3TCBYE1eocNjAYDqaGZdXPcRqWjne+BTk+X2bX9HSOr1Zh+KM5KbJiZ7AYs4HVZ6NWeB26hzS9JFvVQ5HoZh0jYfj36QT03mVrijbjJDiCWtipMDPwTaLIN0lBEAA */
-    id: 'Game Machine',
-    initial: 'idle',
-
-    states: {
-      idle: {
-        on: {
-          CONNECT: 'gameActive',
-        },
+export const gameMachine = setup({
+  actions: {
+    waitForPlayers: () => {
+      console.log('WAITING FOR PLAYERS');
+    },
+  },
+  actors: {
+    startGame: fromPromise(async ({ input }) => {}),
+    generateRound: fromPromise(async ({ input }) => {}),
+    processGuess: fromPromise(async ({ input }) => {}),
+    notifyIncorrectGuess: fromPromise(async ({ input }) => {}),
+  },
+  guards: {
+    isCorrect: ({ context }) => {
+      //Do something
+      return true;
+    },
+  },
+}).createMachine({
+  /** @xstate-layout N4IgpgJg5mDOIC5QHECGBbMACAsqgxgBYCWAdmAHTEQA2YAxAMIDyAcqwKKMAqA2gAwBdRKAAOAe1jEALsXGkRIAB6IAjACYArBQCcenQA4AbOoAsAZnWWA7NYA0IAJ6IDqipv6fVGowfMH1a1MAX2CHNExcAhJyCigMMABBfFkAN0oAd1QZADFxACcABRpURzB82HoAZW5EgCU+IUUJKVl5RRUEc351ClV+HXMjU1Vzcx1TfiNzB2cEI2sjCj8x-wtTTXVjUPCEqKIySnjMZLTKWGlUfNlSKAiGCHlKMlTxAGtKe-2Yo4TT4nSFAuVxudwSCBe4nwqDapAEgnhzUkMjkCiQykQRlUBgo1lc6l8mgMBh0Jk0s0xeIoq3MpiM-DptiJOxAXzwB1ixySKQBRzA5HyMLIUDq4gArqQIPRHrFIR8KGzooc4n8eYCYAKhbdRRKIBDSK9obD4Yj0S0Ue10Z1+h5caZ9Js9PbzOSnJjphQtF4PIsXRsWYqOb8TmrMtlpHl8sgxXBKowADIASQ4rG4AH1kABVDhVKqmsTI2EdNTeXo6KZmHpjZ32N0IEa9DyeLbWbrmVRGBYBvbsn4qkNnCiifJQ2PC6Ox+j5kDmotWzHY3H4wnE0laCnzfjWXREsb8Jsd0bdyK95Vc-6A4ej2BSW4Tm9T1TCM2F1HF+aLvE+AxEklkjeaES7ieD0Bj8K4qzWMe2CnpyqqDmQ+AFPkYApPelQys8BrvJ8PZKnBA68lQpBIfkKFoTGN76oaQryCaTQvq0b7zggNr8HaDrqE6gyunMgHbtYTZcVo-iBCELKkOIEBwIogY-EiTGWqAnQALQ6BuKlGNB3zKtQdAKRaaLKYgpjqBuAQUCB-Clr4olBNpsHBtyZwGXOxldOpdaWNoVmqEEWKDOMWlhKyeFBv2zlEVkuQFMUpTlPAjGGe+Bi1nMRiaOYyyrOB1g6N4PSqA5+FORe5yXNc44JK5zHuSMWWqJoJhYj0zU6JlG4ZVlKzdKl+X9OoRUhXJZ7wURGrlFqIripKNVKRiCBgW46hWKSOhWFMP6mJ1-i4geiz2gFmjFeF56hhQ0URgU6FzUZC0aKllmDIJpmLIEDIAZoOiekJHYjESDInX2Z2Dle+BjnelGJQWil3Z0pnaIYFjWP0HaaBYnl8e11KrAEWjo1sQOjYRgKIchqHSDdSVuQteVuMjmiqOtX3tZjiCZVlXr8O2ATWAMZihKEQA */
+  id: 'Game Machine',
+  initial: 'idle',
+  states: {
+    idle: {
+      on: {
+        CONNECT: 'gameActive',
       },
-      gameActive: {
-        initial: 'waitForPlayers',
-        states: {
-          waitForPlayers: {
-            entry: [
-              {
-                type: 'waitForPlayers',
-              },
-            ],
-            on: {
-              START: 'startingGame',
-            },
+    },
+
+    gameActive: {
+      initial: 'waitForPlayers',
+      states: {
+        waitForPlayers: {
+          entry: [{ type: 'waitForPlayers' }],
+          on: {
+            START: 'startingGame',
           },
-          startingGame: {
-            invoke: {
-              src: 'startGame',
-              onDone: { target: 'generatingRound' },
-            },
+        },
+        startingGame: {
+          invoke: {
+            src: 'startGame',
+            onDone: { target: 'generatingRound' },
           },
-          generatingRound: {
-            invoke: {
-              src: 'generateRound',
-              onDone: { target: 'waitForGuess' },
-            },
+        },
+        generatingRound: {
+          invoke: {
+            src: 'generateRound',
+            onDone: { target: 'waitForGuess' },
           },
-          waitForGuess: {
-            on: {
-              CLIENT_GUESS: 'processingGuess',
-            },
+        },
+        waitForGuess: {
+          on: {
+            CLIENT_GUESS: 'processingGuess',
           },
-          processingGuess: {
-            always: [
-              {
-                guard: 'isCorrect',
-                target: 'generatingRound',
-              },
-              { target: 'incorrectGuess' },
-            ],
-          },
-          incorrectGuess: {
-            invoke: {
-              src: 'notifyIncorrectGuess',
-              onDone: { target: 'waitForGuess' },
+        },
+        processingGuess: {
+          always: [
+            {
+              guard: 'isCorrect',
+              target: 'generatingRound',
             },
+            { target: 'incorrectGuess' },
+          ],
+        },
+        incorrectGuess: {
+          invoke: {
+            src: 'notifyIncorrectGuess',
+            onDone: { target: 'waitForGuess' },
           },
         },
       },
     },
   },
-  {
-    guards: {
-      isCorrect: ({ context }) => {
-        //Do something
-        return true;
-      },
-    },
-    actions: {
-      waitForPlayers: (context, event) => {
-        console.log('WAITING FOR PLAYERS');
-      },
-      startGame: (context, event) => {},
-      generateRound: (context, event) => {},
-      processGuess: (context, event) => {},
-      notifyIncorrectGuess: (context, event) => {},
-    },
-  },
-);
+});
 
 export const gameActor = createActor(gameMachine);
