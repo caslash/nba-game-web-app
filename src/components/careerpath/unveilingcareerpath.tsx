@@ -15,7 +15,7 @@ export function UnveilingCareerPath({
   useEffect(() => {
     const unveilInterval = setInterval(() => {
       unveilRandomLogoIndex(unveilInterval);
-    }, 3000);
+    }, 2000);
 
     return () => {
       clearInterval(unveilInterval);

@@ -1,7 +1,7 @@
+import PlayerSearchResult from '@/components/search/playersearchresult';
 import { Autocomplete, AutocompleteItem } from '@heroui/react';
 import { Player } from '@prisma/client';
 import { AsyncListData } from '@react-stately/data';
-import PlayerSearchResult from './playersearchresult';
 
 export default function PlayerSearchBar({
   playerCount,
