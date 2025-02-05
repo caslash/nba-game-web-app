@@ -42,9 +42,14 @@ describe('useCareerPath', () => {
     mockCtx.prisma.player.findFirst.mockResolvedValue(mockPlayer);
   });
 
-  it('Initializes with no answer', () => {
+  it('Initializes with no answer', async () => {
     const { result } = renderHook(() => useCareerPath(ctx));
-    expect(result.current.currentPlayer).toBe(null);
+    await waitFor(() => expect(result.current.currentPlayer).toBe(null));
+  });
+
+  it('Initializes without specifying context', async () => {
+    const { result } = renderHook(() => useCareerPath());
+    await waitFor(() => expect(result.current.currentPlayer).toBe(null));
   });
 
   it('Starts game and sets currentPlayer', async () => {
