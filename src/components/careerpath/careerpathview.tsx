@@ -4,7 +4,7 @@ import TeamLogo from '@/components/teamlogo';
 import { Player } from '@prisma/client';
 import { v4 } from 'uuid';
 
-export function CareerPathView({
+export function CareerPath({
   player,
   theme,
 }: Readonly<{ player?: Player | null; theme: string | undefined }>) {

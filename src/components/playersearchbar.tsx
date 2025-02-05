@@ -1,18 +1,18 @@
 import { Autocomplete, AutocompleteItem } from '@heroui/react';
 import { Player } from '@prisma/client';
 import { AsyncListData } from '@react-stately/data';
-import { Key } from 'react';
+import PlayerSearchResult from './playersearchresult';
 
 export default function PlayerSearchBar({
   playerCount,
   list,
   className,
-  onSelectionChange,
+  onSelect,
 }: Readonly<{
   playerCount: number;
   list: AsyncListData<Player>;
   className: string;
-  onSelectionChange?: (key: Key | null) => void;
+  onSelect: (id: number) => void;
 }>) {
   return (
     <div className={`flex flex-row items-center ${className}`}>
@@ -24,10 +24,17 @@ export default function PlayerSearchBar({
         label={`Search ${playerCount} players`}
         labelPlacement="inside"
         onInputChange={list.setFilterText}
-        onSelectionChange={onSelectionChange}
+        maxListboxHeight={380}
+        itemHeight={60}
       >
         {(player: Player) => (
-          <AutocompleteItem key={player.id}>{player.display_first_last}</AutocompleteItem>
+          <AutocompleteItem
+            key={player.id}
+            textValue={player.display_first_last ?? ''}
+            onPress={() => onSelect(player.id)}
+          >
+            <PlayerSearchResult player={player} onSelect={onSelect} />
+          </AutocompleteItem>
         )}
       </Autocomplete>
     </div>

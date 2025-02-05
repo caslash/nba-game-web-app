@@ -4,7 +4,7 @@ import { Context } from '@/database/prisma.context';
 import '@/database/prisma.symbol';
 import { getPlayers, getRandomPlayer } from '@/server/actions';
 import { Player, Prisma } from '@prisma/client';
-import { Key, useState } from 'react';
+import { useState } from 'react';
 import { container } from 'tsyringe';
 
 const useCareerPath = (ctx: Context = container.resolve(Context)) => {
@@ -24,22 +24,20 @@ const useCareerPath = (ctx: Context = container.resolve(Context)) => {
   };
 
   const checkGuess = (
-    key: Key | null,
+    id: number,
     onCorrect: (correctPlayer: Player) => void,
     onIncorrect: (possibleAnswers: Player[]) => void,
   ) => {
-    if (key !== null) {
-      const previousPossibleAnswers = possibleAnswers;
-      const guessedPlayer = possibleAnswers?.find((player) => player.id == key);
-      if (guessedPlayer) {
-        onCorrect(guessedPlayer);
-        setStreak(streak + 1);
-      } else {
-        onIncorrect(previousPossibleAnswers);
-        setStreak(0);
-      }
-      onStart();
+    const previousPossibleAnswers = possibleAnswers;
+    const guessedPlayer = possibleAnswers?.find((player) => player.id == id);
+    if (guessedPlayer) {
+      onCorrect(guessedPlayer);
+      setStreak(streak + 1);
+    } else {
+      onIncorrect(previousPossibleAnswers);
+      setStreak(0);
     }
+    onStart();
   };
 
   return { currentPlayer, setPlayerPoolFilter, onStart, checkGuess, streak };

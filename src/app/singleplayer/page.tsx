@@ -1,7 +1,7 @@
 'use client';
 
-import { CorrectAnswerView, IncorrectAnswerView } from '@/components/careerpath/answerview';
-import { UnveilingCareerPathView } from '@/components/careerpath/unveilingcareerpathview';
+import { CorrectAnswer, IncorrectAnswer } from '@/components/careerpath/answer';
+import { UnveilingCareerPath } from '@/components/careerpath/unveilingcareerpath';
 import PlayerSearchBar from '@/components/playersearchbar';
 import useCareerPath from '@/hooks/useCareerPath';
 import useConfetti from '@/hooks/useConfetti';
@@ -21,6 +21,7 @@ export default function SinglePlayer() {
   useEffect(
     () =>
       setPlayerPoolFilter({
+        isActive: { equals: true },
         team_history: { contains: ',' },
         total_games_played: { gte: 800 },
       }),
@@ -28,12 +29,12 @@ export default function SinglePlayer() {
   );
 
   const correctAction = (correctPlayer: Player) => {
-    toast(<CorrectAnswerView correctPlayer={correctPlayer} />, { theme });
+    toast(<CorrectAnswer correctPlayer={correctPlayer} />, { theme });
     onConfetti();
   };
 
   const incorrectAction = (possibleAnswers: Player[]) => {
-    toast(<IncorrectAnswerView possibleAnswers={possibleAnswers} />, { theme });
+    toast(<IncorrectAnswer possibleAnswers={possibleAnswers} />, { theme });
   };
 
   return (
@@ -45,14 +46,14 @@ export default function SinglePlayer() {
             <p className={`font-black text-xl`}>Streak:</p>
             <p className={`font-semibold text-6xl`}>{streak}</p>
           </div>
-          <UnveilingCareerPathView teamHistory={currentPlayer.team_history!.split(',')} />
+          <UnveilingCareerPath teamHistory={currentPlayer.team_history!.split(',')} />
         </div>
       )}
       <PlayerSearchBar
         playerCount={playerCount}
         list={list}
         className="w-1/2"
-        onSelectionChange={(key) => checkGuess(key, correctAction, incorrectAction)}
+        onSelect={(id: number) => checkGuess(id, correctAction, incorrectAction)}
       />
     </div>
   );

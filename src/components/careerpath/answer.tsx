@@ -4,7 +4,7 @@ import { Image } from '@heroui/react';
 import { Player } from '@prisma/client';
 import NextImage from 'next/image';
 
-const CorrectAnswerView = ({ correctPlayer }: Readonly<{ correctPlayer: Player }>) => {
+const CorrectAnswer = ({ correctPlayer }: Readonly<{ correctPlayer: Player }>) => {
   return (
     <div className="flex flex-col items-center">
       <p className="text-center">
@@ -22,7 +22,7 @@ const CorrectAnswerView = ({ correctPlayer }: Readonly<{ correctPlayer: Player }
   );
 };
 
-const IncorrectAnswerView = ({ possibleAnswers }: Readonly<{ possibleAnswers: Player[] }>) => {
+const IncorrectAnswer = ({ possibleAnswers }: Readonly<{ possibleAnswers: Player[] }>) => {
   return (
     <div className="flex flex-col items-center">
       <p className="text-center">Incorrect, the possible answers were:</p>
@@ -44,4 +44,4 @@ const IncorrectAnswerView = ({ possibleAnswers }: Readonly<{ possibleAnswers: Pl
   );
 };
 
-export { CorrectAnswerView, IncorrectAnswerView };
+export { CorrectAnswer, IncorrectAnswer };

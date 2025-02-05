@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { v4 } from 'uuid';
 import TeamLogo from '../teamlogo';
 
-export function UnveilingCareerPathView({
+export function UnveilingCareerPath({
   teamHistory,
 }: Readonly<{
   teamHistory: string[];
