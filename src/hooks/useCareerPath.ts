@@ -15,9 +15,9 @@ const useCareerPath = (ctx: Context = container.resolve(Context)) => {
 
   const onStart = () => {
     setCurrentPlayer(null);
-    getRandomPlayer(playerPoolFilter, ctx).then((player) => {
+    getRandomPlayer({ where: playerPoolFilter, ctx }).then((player) => {
       setCurrentPlayer(player);
-      getPlayers({ where: { team_history: { equals: player?.team_history } } }, ctx).then(
+      getPlayers({ args: { where: { team_history: { equals: player?.team_history } } }, ctx }).then(
         setPossibleAnswers,
       );
     });

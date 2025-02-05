@@ -9,11 +9,13 @@ export async function GET(request: NextRequest) {
   const startingPos = (page - 1) * rowsPerPage;
 
   const players = await getPlayers({
-    orderBy: {
-      last_name: 'asc',
+    args: {
+      orderBy: {
+        last_name: 'asc',
+      },
+      skip: startingPos,
+      take: rowsPerPage,
     },
-    skip: startingPos,
-    take: rowsPerPage,
   });
 
   const total = await getPlayerCount();

@@ -6,12 +6,14 @@ export async function GET(request: NextRequest) {
   const searchTerm: string = params.get('searchTerm') ?? '';
 
   const results = await getPlayers({
-    orderBy: {
-      last_name: 'asc',
-    },
-    where: {
-      display_first_last: {
-        contains: searchTerm,
+    args: {
+      orderBy: {
+        last_name: 'asc',
+      },
+      where: {
+        display_first_last: {
+          contains: searchTerm,
+        },
       },
     },
   });
