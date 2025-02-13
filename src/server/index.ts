@@ -3,7 +3,7 @@ import { createServer } from 'node:http';
 
 import { createServerSocket } from '@/server/lib/serverSocket';
 import { Actor, AnyStateMachine } from 'xstate';
-import { createGameMachine } from './lib/statemachine';
+import { createGameMachine } from './lib/statemachine/statemachine';
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';

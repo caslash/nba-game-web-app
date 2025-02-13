@@ -22,8 +22,9 @@ const useClientSocket = () => {
   const [score, setScore] = useState<number>(0);
   const [teams, setTeams] = useState<string[] | null>(null);
 
-  function connectSocket() {
+  function connectSocket(roomId: string) {
     clientSocket.connect();
+    clientSocket.emit('join_room', roomId);
   }
   function disconnectSocket() {
     clientSocket.disconnect();

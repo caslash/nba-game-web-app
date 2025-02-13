@@ -1,8 +1,14 @@
 import { Player } from '@prisma/client';
 import { Socket } from 'socket.io';
-import { Actor, AnyStateMachine, createActor, enqueueActions, fromPromise, setup } from 'xstate';
+import { Actor, AnyStateMachine, createActor, enqueueActions, setup } from 'xstate';
 
-import { generateRound } from '@/server/lib/statemachineactors';
+import { sendPlayerToClient, waitForPlayers } from '@/server/lib/statemachine/statemachineactions';
+import {
+  generateRound,
+  notifyCorrectGuess,
+  notifyIncorrectGuess,
+  processGuess,
+} from '@/server/lib/statemachine/statemachineactors';
 
 export function createGameMachine(socket: Socket, roomId: string): Actor<AnyStateMachine> {
   const gameMachine = setup({
@@ -14,24 +20,14 @@ export function createGameMachine(socket: Socket, roomId: string): Actor<AnyStat
       };
     },
     actions: {
-      waitForPlayers: ({ context }) => {
-        const { socket, roomId } = context;
-        socket.to(roomId).emit('waiting_for_players');
-      },
-      sendPlayerToClient: ({ context }) => {
-        const { socket, roomId, gameState } = context;
-        const { round, score, currentPlayer } = gameState;
-
-        const team_history = currentPlayer?.team_history?.split(',');
-
-        socket.to(roomId).emit('next_round', { round, score, team_history });
-      },
+      waitForPlayers,
+      sendPlayerToClient,
     },
     actors: {
       generateRound,
-      processGuess: fromPromise(async ({ input }) => {}),
-      notifyCorrectGuess: fromPromise(async ({ input }) => {}),
-      notifyIncorrectGuess: fromPromise(async ({ input }) => {}),
+      processGuess,
+      notifyCorrectGuess,
+      notifyIncorrectGuess,
     },
     guards: {
       isCorrect: ({ context, event }) => {

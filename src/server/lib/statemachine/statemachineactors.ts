@@ -12,7 +12,7 @@ export const generateRound = fromPromise(
   },
 );
 
-export const processingGuess = fromPromise(async ({ input }) => {});
+export const processGuess = fromPromise(async ({ input }) => {});
 
 export const notifyCorrectGuess = fromPromise(async ({ input }) => {});
 
