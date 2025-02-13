@@ -71,6 +71,7 @@ const useClientSocket = () => {
   }, []);
 
   return {
+    clientSocket,
     connectSocket,
     disconnectSocket,
     isConnected,
