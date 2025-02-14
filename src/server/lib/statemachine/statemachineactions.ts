@@ -1,9 +1,9 @@
 import { Player } from '@prisma/client';
-import { Socket } from 'socket.io';
+import { DefaultEventsMap, Server } from 'socket.io';
 
 type ActionProps = {
   context: {
-    socket: Socket;
+    io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
     roomId: string;
     gameState: {
       round: number;
@@ -14,15 +14,15 @@ type ActionProps = {
 };
 
 export const waitForPlayers = ({ context }: ActionProps) => {
-  const { socket, roomId } = context;
-  socket.to(roomId).emit('waiting_for_players');
+  const { io, roomId } = context;
+  io.to(roomId).emit('waiting_for_players');
 };
 
 export const sendPlayerToClient = ({ context }: ActionProps) => {
-  const { socket, roomId, gameState } = context;
+  const { io, roomId, gameState } = context;
   const { round, score, currentPlayer } = gameState;
 
   const team_history = currentPlayer?.team_history?.split(',');
 
-  socket.to(roomId).emit('next_round', { round, score, team_history });
+  io.to(roomId).emit('next_round', { round, score, team_history });
 };

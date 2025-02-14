@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tsx src/server",
     "build": "next build",
-    "start": "NODE_ENV=production node src/server.ts",
+    "start": "NODE_ENV=production tsx src/server",
     "lint": "jest --config=jest.lint.config.ts"
   },
   "dependencies": {

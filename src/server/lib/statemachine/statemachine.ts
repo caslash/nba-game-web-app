@@ -1,5 +1,5 @@
 import { Player } from '@prisma/client';
-import { Socket } from 'socket.io';
+import { DefaultEventsMap, Server } from 'socket.io';
 import { Actor, AnyStateMachine, createActor, enqueueActions, setup } from 'xstate';
 
 import { sendPlayerToClient, waitForPlayers } from '@/server/lib/statemachine/statemachineactions';
@@ -10,11 +10,14 @@ import {
   processGuess,
 } from '@/server/lib/statemachine/statemachineactors';
 
-export function createGameMachine(socket: Socket, roomId: string): Actor<AnyStateMachine> {
+export function createGameMachine(
+  io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
+  roomId: string,
+): Actor<AnyStateMachine> {
   const gameMachine = setup({
     types: {} as {
       context: {
-        socket: Socket;
+        io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
         roomId: string;
         gameState: { round: number; score: number; currentPlayer: Player | undefined };
       };
@@ -40,7 +43,7 @@ export function createGameMachine(socket: Socket, roomId: string): Actor<AnyStat
     id: `nba-game-machine-${roomId}`,
     initial: 'idle',
     context: {
-      socket,
+      io,
       roomId,
       gameState: {
         round: 0,
@@ -63,7 +66,7 @@ export function createGameMachine(socket: Socket, roomId: string): Actor<AnyStat
         states: {
           waitForPlayers: {
             entry: enqueueActions(({ event, enqueue }) => {
-              enqueue.assign({ socket: event.socket });
+              enqueue.assign({ io: event.io });
               enqueue('waitForPlayers');
             }),
             on: {
@@ -120,5 +123,5 @@ export function createGameMachine(socket: Socket, roomId: string): Actor<AnyStat
     },
   });
 
-  return createActor(gameMachine);
+  return createActor(gameMachine).start();
 }

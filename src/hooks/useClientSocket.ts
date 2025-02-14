@@ -2,6 +2,7 @@
 
 import { clientSocket } from '@/app/clientSocket';
 import { useEffect, useState } from 'react';
+import ShortUniqueId from 'short-unique-id';
 
 interface StateProps {
   gameActive?: string;
@@ -14,6 +15,8 @@ interface RoundProps {
 }
 
 const useClientSocket = () => {
+  const { randomUUID } = new ShortUniqueId({ length: 8 });
+  const [roomId, setRoomId] = useState<string>('');
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [canStartGame, setCanStartGame] = useState<boolean>(false);
   const [machineState, setMachineState] = useState<string>('idle');
@@ -22,17 +25,27 @@ const useClientSocket = () => {
   const [score, setScore] = useState<number>(0);
   const [teams, setTeams] = useState<string[] | null>(null);
 
-  function connectSocket(roomId: string) {
+  function connectSocket() {
     clientSocket.connect();
-    clientSocket.emit('join_room', roomId);
   }
   function disconnectSocket() {
+    leaveRoom();
     clientSocket.disconnect();
+  }
+  function joinRoom() {
+    const newId = 'new_room';
+    setRoomId(newId);
+    clientSocket.emit('join_room', newId);
+  }
+  function leaveRoom() {
+    clientSocket.emit('leave_room', roomId);
+    setRoomId('');
   }
   function onConnect() {
     setIsConnected(true);
   }
   function onDisconnect() {
+    setRoomId('');
     setIsConnected(false);
     setMachineState('idle');
     setRound(0);
@@ -47,7 +60,7 @@ const useClientSocket = () => {
   }
   function onStartGame() {
     setCanStartGame(false);
-    clientSocket.emit('start_game');
+    clientSocket.emit('start_game', roomId);
   }
   function onNextRound({ round, score, team_history }: RoundProps) {
     setRound(round);
@@ -72,7 +85,9 @@ const useClientSocket = () => {
   }, []);
 
   return {
-    clientSocket,
+    roomId,
+    joinRoom,
+    leaveRoom,
     connectSocket,
     disconnectSocket,
     isConnected,
